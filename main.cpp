@@ -28,6 +28,7 @@ bool gen_flag = false;
 //* Function forward declaration
 //***************************************************************************
 void print_outliers (vector<float>& outs_score, vector<int>& outs_ind,int outlier_num);
+void print_knn_search (Point& pt, vector<Neighbour>& neighbours);
 //***************************************************************************
 
 typedef struct{
@@ -268,9 +269,9 @@ int main(int argc, char** argv){
 		//Read the dataset from a given file
 		readPts (dataset_filename, dataset, reference_pts_num, dimension_num);
 	}
-
-
-
+	vector<Neighbour> nn;
+	knn (dataset, dataset [0], neighbour_num, 0.0f, nn);
+	print_knn_search (dataset [0], nn);
 
 	//perform outlier detection
 
@@ -278,6 +279,17 @@ int main(int argc, char** argv){
 		dataset[i].print ();
 	}
 
+}
+
+void print_knn_search (Point& pt, vector<Neighbour>& neighbours){
+
+	pt.print();
+	cerr << "neighbours:" << endl;
+	for (int i = 0; i < neighbours.size (); i++){
+		cout << "\t" << neighbours [i].pt.id << "(" << neighbours[i].dist << ")"
+			<< endl;
+	}
+	cout << endl;
 }
 
 void print_outliers (vector<float>& outs_score, vector<int>& outs_ind,int outlier_num){
