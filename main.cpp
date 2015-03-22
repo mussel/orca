@@ -27,7 +27,6 @@ bool gen_flag = false;
 //***************************************************************************
 //* Function forward declaration
 //***************************************************************************
-void print_outliers (vector<float>& outs_score, vector<int>& outs_ind,int outlier_num);
 void print_knn_search (Point& pt, vector<Neighbour>& neighbours);
 //***************************************************************************
 
@@ -258,6 +257,7 @@ void init_dataset (vector<Point>& ds, int pt_num, int dimension_num){
 
 int main(int argc, char** argv){
 	vector<Point> dataset;
+	vector<Outlier> outliers;
 	load_args(argc, argv);
 	
 	if (gen_flag){
@@ -269,14 +269,11 @@ int main(int argc, char** argv){
 		//Read the dataset from a given file
 		readPts (dataset_filename, dataset, reference_pts_num, dimension_num);
 	}
-	vector<Neighbour> nn;
-	knn (dataset, dataset [0], neighbour_num, 0.0f, nn);
-	print_knn_search (dataset [0], nn);
+	orca (dataset, neighbour_num, outlier_num, outliers);
 
-	//perform outlier detection
-
-	for (int i = 0; i < dataset.size (); i++){
-		dataset[i].print ();
+	cout << "outlier_num:" << outliers.size() << endl;
+	for (int i = 0; i < outliers.size (); i++){
+		outliers [i].print ();
 	}
 
 }
@@ -290,13 +287,5 @@ void print_knn_search (Point& pt, vector<Neighbour>& neighbours){
 			<< endl;
 	}
 	cout << endl;
-}
-
-void print_outliers (vector<float>& outs_score, vector<int>& outs_ind,int outlier_num){
-	
-	cout << "outlier_num:" << outlier_num << "\n";
-	for (int i = 0; i < outlier_num; i++){
-		cout << "\tOutlier - id:" << outs_ind[i] << ";score:" << outs_score[i] << "\n";
-	}
 }
 
