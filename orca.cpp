@@ -132,6 +132,7 @@ void orca (vector<Point>& dataset, int k, int outlier_num, vector<Outlier>&
 		if (curr_out_num < outlier_num){
 			//the outlier list is not full yet. Just add the current outlier
 			//candidate
+			out_candidate.neighbours = nn;
 			outliers.push_back (out_candidate);
 			std::push_heap (outliers.begin(), outliers.end(), cmp);
 			curr_out_num++;
