@@ -15,6 +15,10 @@ Outlier::Outlier (Point pt_):
 	score (0.0f)
 {}
 
+void Outlier::print (){
+	cout << "\tOutlier - id:" << pt.id << ";score:" << score << "\n";
+}
+
 
 void Point::print () {
 	cout << id << ":";

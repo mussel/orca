@@ -23,10 +23,12 @@ struct Neighbour {
 struct Outlier{
 	public:
 		Outlier (Point pt_);
-	private:
+		Outlier (){}
+		void print();
+
 		Point pt;
 		float score;
-		std::vector<Point> neighbours;
+		std::vector<Neighbour> neighbours;
 };
 typedef struct Outlier Outlier;	
 
