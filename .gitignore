@@ -1,0 +1,9 @@
+*.exe
+*.o
+*.tmp
+*.log
+*.swp
+*.swo
+*.ts
+*.csv
+*.sh
