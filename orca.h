@@ -35,5 +35,7 @@ typedef struct Outlier Outlier;
 
 void knn (std::vector<Point>& dataset, Point& target_pt, int k, float dkmin,
 		std::vector<Neighbour>& neighbours);
+void orca (std::vector<Point>& dataset, int k, int outlier_num, 
+		std::vector<Outlier>& outliers);
 #endif
 

@@ -9,6 +9,11 @@ struct CompareNeighbour{
 	}
 };
 
+struct CompareOutlier{
+	bool operator() (Outlier const &o1, Outlier const &o2){
+		return o1.score > o2.score;
+	}
+};
 
 Outlier::Outlier (Point pt_):
 	pt(pt_),
@@ -96,4 +101,63 @@ void knn (vector<Point>& dataset, Point& target_pt, int k, float dkmin,
 			//search.
 			return;
 	}
+}
+
+void orca (vector<Point>& dataset, int k, int outlier_num, vector<Outlier>&
+		outliers){
+
+	Outlier out_candidate;
+	vector<Outlier>::iterator last_out;
+	int pt_num = dataset.size();
+	int curr_out_num = 0;
+	vector<Neighbour> nn;
+	float dkmin = 0.0f;
+	Neighbour k_nn;
+	CompareOutlier cmp;
+
+	//initialize the outlier heap
+	outliers.clear ();
+	outliers.reserve (outlier_num);
+	for (int i = 0; i < pt_num; i++){
+		out_candidate.pt = dataset [i];
+
+		//firstly, we need to find the nn`s of out_candidate
+		knn (dataset, out_candidate.pt, k, dkmin, nn);
+		//Now we compute the anomaly score of the outlier candidate. In this
+		//implementation, the score is equal to the distance to its kth nearest
+		//neighbour.
+		out_candidate.score = nn.front().dist;
+
+		if (curr_out_num < outlier_num){
+			//the outlier list is not full yet. Just add the current outlier
+			//candidate
+			outliers.push_back (out_candidate);
+			std::push_heap (outliers.begin(), outliers.end(), cmp);
+			curr_out_num++;
+		}
+		else{
+			//the outlier list is full. We need to check if the current
+			//candidate's score is big enough for it to enter the top outlier
+			//list
+			if (out_candidate.score >= outliers.front().score){
+				//copy the neighbours list for this candidate
+				out_candidate.neighbours = nn;
+				//we pop the candidate with the lowest anomaly score
+				std::pop_heap (outliers.begin(), outliers.end(),
+						cmp);
+				//replace the removed candidate's obj with the new outlier
+				//candidate
+				last_out = (--outliers.end());
+				*last_out = out_candidate;
+				std::push_heap (outliers.begin(), outliers.end(),
+						cmp);
+
+				//now update the dkmin
+				dkmin = outliers.front().score;
+			}
+		}
+	}
+
+	//before returning, sort the list of outlier in descending order
+	sort (outliers.begin(), outliers.end(), cmp);
 }
