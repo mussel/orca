@@ -43,7 +43,7 @@ float Point::calc_distance (Point& pt){
 	int attr_num = pt.attrs.size();
 
 	for (int i = 0; i < attr_num; i++){
-		tmp = pt.attrs [i];
+		tmp = pt.attrs [i] - attrs[i];
 		sum += (tmp * tmp);
 	}
 	return sqrt(sum);
