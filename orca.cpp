@@ -91,15 +91,16 @@ void knn (vector<Point>& dataset, Point& target_pt, int k, float dkmin,
 				//now, restore the heap state
 				std::push_heap (neighbours.begin(), neighbours.end(), cmp);
 			}
+
+			//check if we can halt the knn search based on the min threshold
+			//dkmin
+			if (neighbours.front ().dist < dkmin)
+				//the distance to the k-th neighbour is already smaller than dkmin.
+				//Since such distance will only continue to decrease, this means
+				//that target_pt can not be an outlier. So we can halt the knn
+				//search.
+				return;
 		}
-		//check if we can halt the knn search based on the min threshold
-		//dkmin
-		if (neighbours.front ().dist < dkmin)
-			//the distance to the k-th neighbour is already smaller than dkmin.
-			//Since such distance will only continue to decrease, this means
-			//that target_pt can not be an outlier. So we can halt the knn
-			//search.
-			return;
 	}
 }
 
