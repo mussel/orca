@@ -8,7 +8,7 @@ clean:
 	rm -f *.o $(EXE)
 
 main: main.cpp orca.o
-	$(CC) main.cpp orca.o -o $(EXE)
+	$(CC) main.cpp orca.o -lm -o $(EXE)
 
 orca.o: orca.cpp orca.h
 	$(CC) -c orca.cpp 
