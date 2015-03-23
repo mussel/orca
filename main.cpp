@@ -154,7 +154,18 @@ void load_args (int argc, char** argv){
 	if (!p)
 		cerr << "# of outliers to be detected not set. Using default: p = " 
 			<< outlier_num << endl;
-			
+
+	 //consistency check
+	 if (neighbour_num < 1 || neighbour_num > reference_pts_num){
+	     cerr << "Invalid value for k. It must be 1 <= k <= m" << endl;
+	     exit(1);
+	 }
+	cerr << "reference_pts_num:" << reference_pts_num << endl;
+	 if (outlier_num <= 0 || outlier_num > reference_pts_num){
+	     cerr << "Invalid value for p. It must be 1 <= p <= m" << endl;
+	     exit(1);
+	}
+
 }
 
 bool readPts(char* file_name, vector<Point>& dataset, long long& pts_num, 
